@@ -21,5 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/posts', [TestController::class, 'allPosts']);
 Route::get('/users', [TestController::class, 'allUsers']);
-Route::get('/rating/{word}', [TestController::class, 'ratingPost']);
+Route::get('/rating/{text}', [TestController::class, 'ratingText']);
 Route::get('/rating', [TestController::class, 'ratingAllPosts']);

@@ -15,7 +15,7 @@ class TestController extends Controller
         // check if status code is 200
         if ($response->status() == 200) {
             $posts = $response->json();
-            dd($posts);
+            return response(["posts" => $posts], 200);
         };
     }
 
@@ -29,8 +29,27 @@ class TestController extends Controller
         };
     }
 
-    public function ratingPost (Request $request, $word) {
-        dd($word);
+    public function ratingText (Request $request, $text) {
+        // get all post from API
+        $response = Http::get(Config::get('constants.POSTS_URL'));
+
+        // check if status code is 200
+        if ($response->status() == 200) {
+            $posts = $response->json();
+
+            $result = array();
+            $resultPosts = array();
+            $resultUsers = array();
+
+            // get all ocurrences by word in all title and body text
+            $globalOcurrence = $this->globalOcurrences($posts);
+            $globalOcurrenceTitle = $globalOcurrence["globalOcurrenceTitle"];
+            $globalOcurrenceBody = $globalOcurrence["globalOcurrenceBody"];
+
+            $totalPointsText = $this->getPointsByOcurrences($text, $globalOcurrenceTitle, $globalOcurrenceBody);
+
+            return response(["data" => $totalPointsText], 200);
+        }
     }
 
     public function ratingAllPosts (Request $request) {
