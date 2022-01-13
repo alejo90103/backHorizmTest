@@ -25,7 +25,7 @@ class TestController extends Controller
         // check if status code is 200
         if ($response->status() == 200) {
             $users = $response->json();
-            dd($users);
+            return response(["users" => $users], 200);
         };
     }
 
@@ -94,12 +94,11 @@ class TestController extends Controller
 
             // add require user parameters (userName, ratingUser) to final array
             $finalResult = $this->addUserToResultPosts($resultPosts, $resultUsers);
-            // dd($finalResult);
 
             // sorted the final array
             $sorted = $this->orderBy($finalResult, 'postRating', SORT_DESC, 'userRating', SORT_DESC);
-            // dd($sorted);
 
+            // export to csv
             $fileName = 'Rating Post.csv';
             $headers = array(
                 "Content-type"        => "text/csv",
